@@ -1,11 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import React, { useEffect , useState} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import SplashScreen from './Screens/SplashScreen';
+import Home from './Screens/Home';
+import DrawerNavigation from './Routes/DrawerNavigation';
+import Settings from './Screens/Settings';
 export default function App() {
+  
+  const [isLoading, setisLoading] = useState(true);
+
+  useEffect(() => {
+    // simulate loading time
+    setTimeout(() => {
+      setisLoading(false);
+    }, 4000);
+  }, []);
+  
+const Drawer = createDrawerNavigator();
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Settings" component={Settings} />
+    </Drawer.Navigator>
+  );
+}
+{/* <NavigationContainer>              <--- Add this for home
+      <MyDrawer />
+    </NavigationContainer> */}
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      {isLoading ? (<SplashScreen />) : (<DrawerNavigation />)}
     </View>
   );
 }
@@ -13,8 +42,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
 });
